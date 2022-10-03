@@ -40,18 +40,22 @@
 		  if(user) {
 				document.getElementById("debug").innerHTML += " - user Signed in Succesfull";
 			  const playerId = user.uid;
-			  const playerRef = firebase.database().ref(`players/${playerId}`);
+			  const playerRef = firebase.database().ref(`field`);
 
 			  const name = playerId;
 
 			  playerRef.set({
-				id: playerId,
-				name : playerId,
-				direction: "right",
-				color: "blue",
-				x : 0,
-				y : 0,
-				coins: 0,
+				x1 : 0,
+				x2 : 0,
+				x3 : 0,
+				
+				x4 : 0,
+				x5 : 0,
+				x6 : 0,
+				
+				x7 : 0,
+				x8 : 0,
+				x9 : 0,
 			  })
 
 			  //Remove me from Firebase when I diconnect
@@ -59,26 +63,103 @@
 			}
 			else
 			{
-							document.getElementById("debug").innerHTML += " - user couldnt be created";
-
+				document.getElementById("debug").innerHTML += " - user couldnt be created";
 			}
 			
 			
 		  });
-	  
+	    
+		const gamefield_ref = firebase.database().ref(`field`);
+		gamefield_ref.on("value", (snapshot) => {
+			  //Fires whenever a change occurs
+			  let current_map = snapshot.val() || {};
+			  document.getElementById("x1").classList = "player_"+current_map.x1;
+			  
+			  document.getElementById("x2").classList = "player_"+current_map.x2;
+			  
+			  document.getElementById("x3").classList = "player_"+current_map.x3;
+			  
+			  document.getElementById("x4").classList = "player_"+current_map.x4;
+			  
+			  document.getElementById("x5").classList = "player_"+current_map.x5;
+			 
+			  document.getElementById("x6").classList = "player_"+current_map.x6;
+			  
+			  document.getElementById("x7").classList = "player_"+current_map.x7;
+			  
+			  document.getElementById("x8").classList = "player_"+current_map.x8;
+			  
+			  document.getElementById("x9").classList = "player_"+current_map.x9;
+
+			  
+			  })
+
 
 		</script>	
+		<script>
+		function select(field) {
+		const gamefield_ref = firebase.database().ref(`field`);
+		let values = {[field] : parseInt(document.getElementById("cars").value)};
+		gamefield_ref.update(values);
+		// gamefield_ref
+		}
 		
+		</script>
 	</head>
 	
 	
 	<body>
 
 		<div id="debug">debug</div>
+		<label for="cars">Choose a player:</label>
 
+		<select name="cars" id="cars">
+		  <option value="2">Red</option>
+		  <option value="1" selected >Blue</option>
+		</select>
+		
+		<div id="gamefield">
+			<div onclick="select('x1');" id="x1"></div>
+			<div onclick="select('x2');" id="x2"></div>
+			<div onclick="select('x3');" id="x3"></div>
+			<div onclick="select('x4');" id="x4"></div>
+			<div onclick="select('x5');" id="x5"></div>
+			<div onclick="select('x6');" id="x6"></div>
+			<div onclick="select('x7');" id="x7"></div>
+			<div onclick="select('x8');" id="x8"></div>
+			<div onclick="select('x9');" id="x9"></div>
+		</div>
 
 
 
 	</body>
+<style>
 
+#gamefield {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 5px;
+  width: 70%;
+}
+#gamefield>div {
+  aspect-ratio: 1;
+}
+.player_0 {
+  background-color: white;
+  border: 2px solid black;
+  margin: 10px;
+}
+
+.player_1 {
+  background-color: rgb(163,214,245);
+  border: 2px solid black;
+  margin: 10px;
+}
+
+.player_2 {
+  background-color: rgb(238,50,51);
+  border: 2px solid black;
+  margin: 10px;
+}
+</style>
 </html>
