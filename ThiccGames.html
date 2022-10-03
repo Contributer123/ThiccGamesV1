@@ -1,0 +1,84 @@
+<html>
+	<head>
+		<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+
+		<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+		<script type="module">
+		  // Import the functions you need from the SDKs you need
+		  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js";
+		  // TODO: Add SDKs for Firebase products that you want to use
+		  // https://firebase.google.com/docs/web/setup#available-libraries
+
+		  // Your web app's Firebase configuration
+		  const firebaseConfig = {
+			apiKey: "AIzaSyBbw3NdycCdgJrKjsT2YrcM8_0Bw16YAS4",
+			authDomain: "thicc-games---tic-tac-toe.firebaseapp.com",
+			databaseURL: "https://thicc-games---tic-tac-toe-default-rtdb.europe-west1.firebasedatabase.app",
+			projectId: "thicc-games---tic-tac-toe",
+			storageBucket: "thicc-games---tic-tac-toe.appspot.com",
+			messagingSenderId: "19951592482",
+			appId: "1:19951592482:web:5ac53bab1183f54108567b"
+		  };
+
+		  // Initialize Firebase
+		  firebase.initializeApp(firebaseConfig);
+		  
+	  
+		  firebase.auth().signInAnonymously().catch((error) => {
+		  
+			var errorCode = error.code;
+			var errorMessage = error.message;
+			// ...
+			document.getElementById("debug").innerHTML += " - An Error Occured";
+			document.getElementById("debug").innerHTML += " - " + errorCode;
+			document.getElementById("debug").innerHTML += " - " + errorMessage;
+		  });
+		  firebase.auth().onAuthStateChanged((user) => {
+		  
+		  if(user) {
+				document.getElementById("debug").innerHTML += " - user Signed in Succesfull";
+			  const playerId = user.uid;
+			  const playerRef = firebase.database().ref(`players/${playerId}`);
+
+			  const name = playerId;
+
+			  playerRef.set({
+				id: playerId,
+				name : playerId,
+				direction: "right",
+				color: "blue",
+				x : 0,
+				y : 0,
+				coins: 0,
+			  })
+
+			  //Remove me from Firebase when I diconnect
+			  playerRef.onDisconnect().remove();
+			}
+			else
+			{
+							document.getElementById("debug").innerHTML += " - user couldnt be created";
+
+			}
+			
+			
+		  });
+	  
+
+		</script>	
+		
+	</head>
+	
+	
+	<body>
+
+		<div id="debug">debug</div>
+
+
+
+
+	</body>
+
+</html>
